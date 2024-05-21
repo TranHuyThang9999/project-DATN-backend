@@ -79,8 +79,7 @@ type TicketRespUpdateById struct {
 }
 
 type TicketGetAllByStatusResp struct {
-	Result Result `json:"result"`
-	//Tickets []*Tickets `json:"tickets"`
+	Result      Result            `json:"result"`
 	ListTickets []*domain.Tickets `json:"list_tickets"`
 }
 type TicketFindByMovieNameReq struct {
