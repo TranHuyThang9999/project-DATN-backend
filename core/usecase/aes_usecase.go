@@ -37,7 +37,6 @@ func (c *UseCaseAes) GeneratesTokenWithAesToQrCodeAndSendQrWithEmail(req *entiti
 
 	key := []byte(configs.Get().KeyAES128)
 	plaintext := []byte(req.Content)
-
 	// Mã hóa dữ liệu
 	ciphertext, err := c.EncryptAes(plaintext, key)
 	if err != nil {
