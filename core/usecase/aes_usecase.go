@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"flick_tickets/common/enums"
-	"flick_tickets/common/log"
 	"flick_tickets/common/utils"
 	"flick_tickets/configs"
 	"flick_tickets/core/domain"
@@ -73,8 +72,6 @@ func (c *UseCaseAes) GeneratesTokenWithAesToQrCodeAndSendQrWithEmail(req *entiti
 	}, nil
 }
 func (c *UseCaseAes) CheckQrCode(ctx context.Context, req *entities.AesContentEncryptReq) (*entities.TokenResponseCheckQrCode, error) {
-
-	log.Infof("req : ", req)
 
 	if req.Token == "" {
 		return &entities.TokenResponseCheckQrCode{
