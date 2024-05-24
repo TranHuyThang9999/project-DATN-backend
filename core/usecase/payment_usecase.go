@@ -339,7 +339,7 @@ func (u *UseCasePayment) SortObjByKey(obj interface{}) (string, error) {
 
 func (u *UseCasePayment) CreateSignatureOfPaymentRequest(data entities.CheckoutRequestType, key string) (string, error) {
 	dataStr := fmt.Sprintf("amount=%s&cancelUrl=%s&description=%s&orderCode=%s&returnUrl=%s",
-		strconv.Itoa(data.Amount), data.CancelUrl, data.Description, strconv.FormatInt(data.OrderCode, 10), data.ReturnUrl)
+		fmt.Sprint(data.Amount), data.CancelUrl, data.Description, strconv.FormatInt(data.OrderCode, 10), data.ReturnUrl)
 
 	hasher := hmac.New(sha256.New, []byte(key))
 	hasher.Write([]byte(dataStr))

@@ -63,7 +63,7 @@ type Item struct {
 
 type CheckoutRequestType struct {
 	OrderCode    int64   `json:"orderCode"`
-	Amount       int     `json:"amount"`
+	Amount       float64 `json:"amount"`
 	Description  string  `json:"description"`
 	CancelUrl    string  `json:"cancelUrl"`
 	ReturnUrl    string  `json:"returnUrl"`
@@ -80,7 +80,7 @@ type CheckoutRequestType struct {
 
 type CheckoutRequestController struct {
 	OrderCode    int64   `json:"orderCode"`
-	Amount       int     `json:"amount"`
+	Amount       float64 `json:"amount"`
 	Description  string  `json:"description"`
 	CancelUrl    string  `json:"cancelUrl"`
 	ReturnUrl    string  `json:"returnUrl"`
