@@ -38,7 +38,8 @@ func main() {
 	//addTimeUseTest()
 	//sortSearch()
 	//fmt.Println(utils.ConvertTimestampToDateTime(1716224400))
-	exportExcel()
+	// exportExcel()
+	fmt.Println("format date", "h/ngay/thang/nam")
 
 }
 func exportExcel() {

@@ -75,7 +75,7 @@ func (c *CollectionOrder) GetAllOrder(ctx context.Context, req *domain.OrdersReq
 		MovieName:      req.MovieName,
 		CreatedAt:      req.CreatedAt,
 		UpdatedAt:      req.UpdatedAt,
-	}).Order("created_at asc").Find(&listOrder)
+	}).Order("created_at desc").Find(&listOrder)
 	return listOrder, result.Error
 }
 func (c *CollectionOrder) TriggerOrder(ctx context.Context) ([]*domain.Orders, error) {
