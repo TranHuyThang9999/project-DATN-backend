@@ -31,6 +31,7 @@ func NewApiRouter(
 	payment *controllers.ControllerPayMent,
 	moive *controllers.ControllerMovie,
 	cart *controllers.ControllerCarts,
+	shift *controllers.ControllerShift,
 ) *ApiRouter {
 	engine := gin.New()
 	gin.DisableConsoleColor()
@@ -38,8 +39,7 @@ func NewApiRouter(
 	engine.Use(gin.Logger())
 	engine.Use(cors.AllowAll())
 	engine.Use(gin.Recovery())
-	engine.Use(gin.Recovery())
-	engine.Use(gin.Logger())
+
 	r := engine.RouterGroup.Group("/manager")
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "pong"})
@@ -132,6 +132,13 @@ func NewApiRouter(
 	r.GET("/cart/getlist", cart.FindByFormcart)
 	r.PUT("/cart/update", cart.UpdateCartById)
 	r.DELETE("/cart/delete/:id", cart.DeleteCartById)
+	//shift
+	r.POST("/shift/add", shift.AddShift)
+	r.GET("/shift/getlist", shift.GetAllShifts)
+
+	//user
+	r.POST("/user/add/staff", user.AddUser)
+	r.GET("/use/getlist/staff", user.GetListStaff)
 	// Thêm công việc vào lịch để chạy mỗi 15 phút = 900s
 	// scheduler := cron.New()
 	// err := scheduler.AddFunc("*/900 * * * *", func() {

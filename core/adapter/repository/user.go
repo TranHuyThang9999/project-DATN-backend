@@ -20,8 +20,8 @@ func NewCollectionUser(cf *configs.Configs, user *adapter.PostGresql) domain.Rep
 }
 
 // AddUser implements domain.RepositoryUser.
-func (c *CollectionUser) AddUser(ctx context.Context, tx *gorm.DB, user *domain.Users) error {
-	result := tx.Create(user)
+func (c *CollectionUser) AddUser(ctx context.Context, user []*domain.Users) error {
+	result := c.collection.Create(user)
 	return result.Error
 }
 
@@ -35,7 +35,7 @@ func (c *CollectionUser) DeleteUserByUsernameStaff(ctx context.Context, tx *gorm
 func (c *CollectionUser) GetAllUserStaffs(ctx context.Context, user *domain.UsersReqByForm) ([]*domain.Users, error) {
 	var users = make([]*domain.Users, 0)
 	result := c.collection.Where(&domain.Users{
-		Id:        user.Id,
+		ID:        user.Id,
 		UserName:  user.UserName,
 		Age:       user.Age,
 		CreatedAt: user.CreatedAt,

@@ -2,7 +2,6 @@ package main
 
 import (
 	"flick_tickets/common/log"
-	"flick_tickets/common/utils"
 	"flick_tickets/configs"
 	"fmt"
 	"io"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/gin-contrib/sse"
 	"github.com/gin-gonic/gin"
+	"github.com/tealeg/xlsx"
 )
 
 type MovieDetail struct {
@@ -37,7 +37,59 @@ func main() {
 	// Example movie details
 	//addTimeUseTest()
 	//sortSearch()
-	fmt.Println(utils.ConvertTimestampToDateTime(1716224400))
+	//fmt.Println(utils.ConvertTimestampToDateTime(1716224400))
+	exportExcel()
+
+}
+func exportExcel() {
+	// Tạo một slice chứa các instance của struct Users
+	users := []Users{
+		{UserName: "John Doe", ShiftNames: "Morning Shift", CinemaName: "Cinema 1", Age: 30, Address: "123 Main St"},
+		{UserName: "Jane Smith", ShiftNames: "Evening Shift", CinemaName: "Cinema 2", Age: 25, Address: "456 Elm St"},
+	}
+
+	// Tạo một file Excel mới
+	file := xlsx.NewFile()
+	sheet, err := file.AddSheet("Users")
+	if err != nil {
+		fmt.Println("Error creating sheet:", err)
+		return
+	}
+
+	// Tạo header cho sheet
+	row := sheet.AddRow()
+	row.AddCell().SetValue("User Name")
+	row.AddCell().SetValue("Shift Names")
+	row.AddCell().SetValue("Cinema Name")
+	row.AddCell().SetValue("Age")
+	row.AddCell().SetValue("Address")
+
+	// Thêm dữ liệu từ slice users vào sheet
+	for _, user := range users {
+		row := sheet.AddRow()
+		row.AddCell().SetValue(user.UserName)
+		row.AddCell().SetValue(user.ShiftNames)
+		row.AddCell().SetValue(user.CinemaName)
+		row.AddCell().SetInt(user.Age)
+		row.AddCell().SetValue(user.Address)
+	}
+
+	// Lưu file Excel
+	err = file.Save("users.xlsx")
+	if err != nil {
+		fmt.Println("Error saving file:", err)
+		return
+	}
+
+	fmt.Println("Excel file saved successfully")
+}
+
+type Users struct {
+	UserName   string `json:"user_name"`
+	ShiftNames string `json:"shift_names"`
+	CinemaName string `json:"cinema_name"`
+	Age        int    `json:"age"`
+	Address    string `json:"address"`
 }
 
 func addTimeUseTest() {

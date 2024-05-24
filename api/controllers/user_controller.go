@@ -23,24 +23,23 @@ func NewControllersUser(
 	}
 }
 func (u *ControllersUser) AddUser(ctx *gin.Context) {
+	var req []*entities.Users
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	resp, err := u.user.AddUser(ctx, req)
+	u.baseController.Response(ctx, resp, err)
+}
+func (u *ControllersUser) GetListStaff(ctx *gin.Context) {
 
-	var req entities.Users
+	var req entities.UserRequestFindByForm
 
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	file, err := ctx.FormFile("file")
-
-	if err != nil && err != http.ErrMissingFile && err != http.ErrNotMultipart {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": "Không thể tải ảnh lên.",
-		})
-		return
-	}
-	req.File = file
-	resp, err := u.user.AddUserd(ctx, &req)
-
+	resp, err := u.user.GetAllUserById(ctx, &req)
 	u.baseController.Response(ctx, resp, err)
 
 }

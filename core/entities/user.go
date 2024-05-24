@@ -2,17 +2,14 @@ package entities
 
 import (
 	"flick_tickets/core/domain"
-	"mime/multipart"
 )
 
 type Users struct {
-	UserName    string                `form:"user_name"`
-	Password    string                `form:"password"`
-	Address     string                `form:"address"`
-	Age         int                   `form:"age"`
-	File        *multipart.FileHeader `form:"file"`
-	Role        int                   `form:"role"`
-	ExpiredTime int                   `form:"expired_time"`
+	UserName   string `json:"user_name"`
+	ShiftNames string `json:"shift_names"`
+	CinemaName string `json:"cinema_name"`
+	Age        int    `json:"age"`
+	Address    string `json:"address"`
 }
 type UserResp struct {
 	Result  Result `json:"result"`
