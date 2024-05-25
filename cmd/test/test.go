@@ -2,6 +2,7 @@ package main
 
 import (
 	"flick_tickets/common/log"
+	"flick_tickets/common/utils"
 	"flick_tickets/configs"
 	"fmt"
 	"io"
@@ -37,9 +38,8 @@ func main() {
 	// Example movie details
 	//addTimeUseTest()
 	//sortSearch()
-	//fmt.Println(utils.ConvertTimestampToDateTime(1716224400))
+	fmt.Println(utils.ConvertTimestampToDateTime(1716670567))
 	// exportExcel()
-	fmt.Println("format date", "h/ngay/thang/nam")
 
 }
 func exportExcel() {

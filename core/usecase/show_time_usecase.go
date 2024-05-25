@@ -344,11 +344,10 @@ func (s *UseCaseShowTime) GetShowTimeByTicketIdForAdmin(ctx context.Context, tic
 			Discount:        showTime.Discount,
 		})
 	}
-	log.Infof("listRespDetail", listRespDetail)
 
 	// Sắp xếp danh sách thời gian chiếu theo thời gian của phim
 	sort.Slice(listRespDetail, func(i, j int) bool {
-		return int(listRespDetail[i].ID) > int(listRespDetail[j].ID)
+		return int(listRespDetail[i].MovieTime) > int(listRespDetail[j].MovieTime)
 	})
 	return &entities.ShowTimeByTicketIdresp{
 		Result: entities.Result{
@@ -463,6 +462,16 @@ func (s *UseCaseShowTime) GetShowTimeById(ctx context.Context, id string) (*enti
 }
 func (s *UseCaseShowTime) UpdateShowTimeById(ctx context.Context, req *entities.ShowTimeUpdateByIdReq) (*entities.ShowTimeUpdateByIdResp, error) {
 	// Kiểm tra nếu CinemaName hoặc MovieTime không được truyền vào, lấy từ API theo ID
+
+	tx, err := s.trans.BeginTransaction(ctx)
+	if err != nil {
+		return &entities.ShowTimeUpdateByIdResp{
+			Result: entities.Result{
+				Code:    enums.TRANSACTION_INVALID_CODE,
+				Message: enums.TRANSACTION_INVALID_MESS,
+			},
+		}, nil
+	}
 	if req.CinemaName == "" || req.MovieTime == 0 {
 		showTime, err := s.st.GetShowTimeById(ctx, req.ID)
 		if err != nil {
@@ -496,7 +505,7 @@ func (s *UseCaseShowTime) UpdateShowTimeById(ctx context.Context, req *entities.
 		}, nil
 	}
 	if showTimeGetCheck == nil {
-		err = s.st.UpdateShowTimeById(ctx, &domain.ShowTimeUpdateReq{
+		err = s.st.UpdateShowTimeById(ctx, tx, &domain.ShowTimeUpdateReq{
 			ID:             req.ID,
 			TicketID:       req.TicketID,
 			CinemaName:     req.CinemaName,
@@ -534,7 +543,7 @@ func (s *UseCaseShowTime) UpdateShowTimeById(ctx context.Context, req *entities.
 	}
 
 	// Cập nhật bản ghi
-	err = s.st.UpdateShowTimeById(ctx, &domain.ShowTimeUpdateReq{
+	err = s.st.UpdateShowTimeById(ctx, tx, &domain.ShowTimeUpdateReq{
 		ID:             req.ID,
 		TicketID:       req.TicketID,
 		CinemaName:     req.CinemaName,
@@ -546,6 +555,7 @@ func (s *UseCaseShowTime) UpdateShowTimeById(ctx context.Context, req *entities.
 		UpdatedAt:      utils.GenerateTimestamp(),
 	})
 	if err != nil {
+		tx.Rollback()
 		return &entities.ShowTimeUpdateByIdResp{
 			Result: entities.Result{
 				Code:    enums.DB_ERR_CODE,
@@ -554,6 +564,7 @@ func (s *UseCaseShowTime) UpdateShowTimeById(ctx context.Context, req *entities.
 		}, nil
 	}
 
+	tx.Commit()
 	return &entities.ShowTimeUpdateByIdResp{
 		Result: entities.Result{
 			Code:    enums.SUCCESS_CODE,
