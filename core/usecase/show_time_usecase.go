@@ -541,7 +541,6 @@ func (s *UseCaseShowTime) UpdateShowTimeById(ctx context.Context, req *entities.
 			},
 		}, nil
 	}
-
 	// Cập nhật bản ghi
 	err = s.st.UpdateShowTimeById(ctx, tx, &domain.ShowTimeUpdateReq{
 		ID:             req.ID,
