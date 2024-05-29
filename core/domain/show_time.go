@@ -56,7 +56,7 @@ type RepositoryShowTime interface {
 	UpsertListShowTime(ctx context.Context, req []*ShowTime) error
 	DeleteShowTimeByid(ctx context.Context, tx *gorm.DB, show_time_id int64) error
 	GetShowTimeById(ctx context.Context, show_time_id int64) (*ShowTime, error)
-	UpdateShowTimeById(ctx context.Context, tx *gorm.DB, req *ShowTimeUpdateReq) error
+	UpdateShowTimeById(ctx context.Context, req *ShowTimeUpdateReq) error
 	FindDuplicateShowTimeUseUpdate(ctx context.Context, movieTime int, cinemaName string) ([]*ShowTime, error)
 	GetAllShowTime(ctx context.Context) ([]*ShowTime, error)
 }
