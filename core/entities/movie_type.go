@@ -12,3 +12,6 @@ type MovieGetAllResp struct {
 	Result Result               `json:"result"`
 	Movie  []*domain.MovieTypes `json:"movie"`
 }
+type MovieRespDelete struct {
+	Result Result `json:"result"`
+}

@@ -3,10 +3,10 @@ package usecase
 import (
 	"context"
 	"flick_tickets/common/enums"
-	"flick_tickets/common/log"
 	"flick_tickets/common/utils"
 	"flick_tickets/core/domain"
 	"flick_tickets/core/entities"
+	"strconv"
 )
 
 type UseCaseMovie struct {
@@ -24,7 +24,6 @@ func (u *UseCaseMovie) AddMovieType(ctx context.Context, req *entities.MovieType
 
 	movieType, err := u.movie.GetMovieTypeByName(ctx, req.MovieTypeName)
 	if err != nil {
-		log.Error(err, "errpr 1")
 		return &entities.MovieTypesAddResp{
 			Result: entities.Result{
 				Code:    enums.DB_ERR_CODE,
@@ -45,7 +44,6 @@ func (u *UseCaseMovie) AddMovieType(ctx context.Context, req *entities.MovieType
 		MovieTypeName: req.MovieTypeName,
 	})
 	if err != nil {
-		log.Error(err, "errpr 2")
 		return &entities.MovieTypesAddResp{
 			Result: entities.Result{
 				Code:    enums.DB_ERR_CODE,
@@ -86,5 +84,31 @@ func (u *UseCaseMovie) GetAllMovieType(ctx context.Context) (*entities.MovieGetA
 			Message: enums.SUCCESS_MESS,
 		},
 		Movie: movies,
+	}, nil
+}
+func (u *UseCaseMovie) DeleteMovieTypeById(ctx context.Context, id string) (*entities.MovieRespDelete, error) {
+	idAfterConvert, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return &entities.MovieRespDelete{
+			Result: entities.Result{
+				Code:    enums.CLIENT_ERROR_CODE,
+				Message: enums.CLIENT_ERROR_MESS,
+			},
+		}, nil
+	}
+	err = u.movie.DeleteMovieTypeById(ctx, idAfterConvert)
+	if err != nil {
+		return &entities.MovieRespDelete{
+			Result: entities.Result{
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
+			},
+		}, nil
+	}
+	return &entities.MovieRespDelete{
+		Result: entities.Result{
+			Code:    enums.SUCCESS_CODE,
+			Message: enums.SUCCESS_MESS,
+		},
 	}, nil
 }

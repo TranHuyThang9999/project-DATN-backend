@@ -36,3 +36,9 @@ func (c *ControllerMovie) GetAllMovieType(ctx *gin.Context) {
 	c.baseController.Response(ctx, resp, err)
 
 }
+func (c *ControllerMovie) DeleteMovieTypeById(ctx *gin.Context) {
+	id := ctx.Query("id")
+	resp, err := c.movie.DeleteMovieTypeById(ctx, id)
+	c.baseController.Response(ctx, resp, err)
+
+}

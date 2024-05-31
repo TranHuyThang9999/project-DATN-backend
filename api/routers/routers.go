@@ -127,6 +127,7 @@ func NewApiRouter(
 	//moive
 	r.POST("/user/movie/add", moive.AddMoiveType)
 	r.GET("/user/movie/getlist", moive.GetAllMovieType)
+	r.DELETE("/user/movie/delete", moive.DeleteMovieTypeById)
 	//cart
 	r.POST("/cart/add", cart.AddCart)
 	r.GET("/cart/getlist", cart.FindByFormcart)
